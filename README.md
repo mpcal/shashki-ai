@@ -1,4 +1,9 @@
 # AI for Playing Russian Checkers (aka "Shashki")
+<div align="center">
+<img src="img/checkers.png" width="75%" title="Image courtesy of @pecanlie at unsplash.com"/>
+</div>
+&nbsp;
+
 The code plays [Russian Checkers](https://en.wikipedia.org/wiki/Russian_draughts) (see
 [official rules](https://fmjd64.org/rules-of-the-game/)) against a popular [Android
 App](https://play.google.com/store/apps/details?id=com.checkersland.android.russian&hl=en_US&gl=US)
