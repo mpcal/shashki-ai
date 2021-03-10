@@ -1,6 +1,6 @@
 # AI for Playing Russian Checkers (aka "Shashki")
 <div align="center">
-<img src="img/checkers.png" width="75%" title="Image courtesy of @pecanlie at unsplash.com"/>
+<img src="img/checkers.png" width="75%" title="Photo by Leonard Reese on Unsplash"/>
 </div>
 &nbsp;
 
