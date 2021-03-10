@@ -1,0 +1,62 @@
+//
+// Purpose: Implements do_move_bk() and do_move_wt() as declared in board.h
+//
+// ------------------------- WARNING - DO NOT MODIFY! --------------------------
+//   This file has been generated automatically.  Modifications will be lost!
+//   Generating script: /**{generating_script}**/
+// -----------------------------------------------------------------------------
+//
+#include <cassert>
+#include <functional>
+#include <vector>
+#include "board.h"
+
+namespace shashki {
+
+/**{all_move_funcs}**/
+
+using MoveFun =
+    std::function<bool(Slice &s1, Slice &s2, const bool blacks_turn)>;
+static const std::unordered_map<Move, MoveFun> move_fun = {
+    /**{map_pairs}**/
+};
+
+bool do_move_bk(Slice &bk, Slice &wt, const Move &move) {
+  // consistency check: this func shall be called only if there's a black token
+  // where the move is to start from
+  if (!GET_64(bk, get_from(move)) && !GET_64(bk, get_from(move) + 32))
+    throw std::runtime_error(
+        "No white token where move should start: bk=" + to_string(bk) +
+        ", wt=" + to_string(wt) + ", from=" + to_string(get_from(move)) +
+        " (to=" + to_string(get_to(move)) + ")");
+
+  // ensure that we have a look up function for the `move`
+  if (move_fun.find(clean_move(move)) == move_fun.end())
+    throw std::runtime_error("Invalid move: from=" + to_string(get_from(move)) +
+                             ", to=" + to_string(get_to(move)));
+
+  // Note: first argument shall be the active player
+  return move_fun.at(clean_move(move))(bk, wt, true);
+}
+
+bool do_move_wt(Slice &bk, Slice &wt, const Move &move) {
+  // consistency check: this func shall be called only if there's a white token
+  // where the move is to start from
+  if (!GET_64(wt, get_from(move)) && !GET_64(wt, get_from(move) + 32)) {
+    print_board(bk, wt, std::vector<Move>(), &move);
+    throw std::runtime_error("No white token where move should start: bk=" +
+                             std::to_string(bk) + ", wt=" + std::to_string(wt) +
+                             ", from=" + std::to_string(get_from(move)) +
+                             " (to=" + std::to_string(get_to(move)) + ")");
+  }
+
+  // ensure that we have a look up function for the `move`
+  if (move_fun.find(clean_move(move)) == move_fun.end())
+    throw std::runtime_error("Invalid move: from=" + to_string(get_from(move)) +
+                             ", to=" + to_string(get_to(move)));
+
+  // Note: first argument shall be the active player
+  return move_fun.at(clean_move(move))(wt, bk, false);
+}
+
+}  // namespace shashki

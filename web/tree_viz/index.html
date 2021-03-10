@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Shashki Board Viz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+
+    <script src="src/shared.js"></script>
+    <script src="src/tree_data.js"></script>
+    <script src="src/tree_diagram.js"></script>
+
+    <div id="carousel">
+        <div class="form-bg">
+            <div class="form-row">
+                <label for="txtBk">Black:</label>
+                <input type="text" id="txtBk" value="9223372036854775808">&nbsp;
+                <label for="txtWt">White:</label>
+                <input type="text" id="txtWt" value="4329472">
+                &nbsp;
+                <label for="txtPlayer">Player:</label>
+                <input type="text" id="txtPlayer" value="wt" >&nbsp;&nbsp;&nbsp;
+                <label for="txtStrat">Strategy:</label>
+                <input type="text" id="txtStrat" value="negamax-ab,5">
+                &nbsp;
+                <button onclick="runViz()" >Visualize</button>
+            </div>
+        </div>
+        <div id="svg-container" class="slide" />
+    </div>
+
+</body>
+
+</html>

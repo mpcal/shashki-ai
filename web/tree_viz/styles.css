@@ -1,0 +1,71 @@
+body {
+    background-color: rgb(75, 75, 75);
+}
+
+#carousel {
+    width: 100%;
+    overflow: visible;
+    white-space: nowrap;
+}
+
+#carousel .slide {
+    display: inline-block;
+}
+
+.form-bg {
+    background-color: gray;
+    width: 100%;
+}
+
+.form-row {
+    padding: 5px;
+}
+
+.form-row>label {
+    font-family: sans-serif;
+    color: white;
+    padding-left: 10px;
+}
+
+#txtBk {
+    min-width: 160px;
+}
+
+#txtWt {
+    min-width: 160px;
+}
+
+#txtPlayer {
+    width: 40px;
+}
+
+
+.form-row>button {
+    margin-left: 20px;
+    padding: 4px 20px;
+    background-color: lightblue;
+    width: "50px";
+}
+
+#svg-container {
+    display: flex;
+    justify-content: center;
+}
+
+.node {
+    cursor: pointer;
+}
+
+.caption {
+    font: 13px sans-serif;
+    text-anchor: middle;
+    vertical-align: top;
+    fill: white;
+    text-shadow: 2px 2px black;
+}
+
+.link {
+    fill: none;
+    stroke: #888;
+    stroke-width: 2px;
+}

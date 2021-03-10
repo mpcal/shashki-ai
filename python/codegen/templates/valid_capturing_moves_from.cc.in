@@ -1,0 +1,82 @@
+//
+// Purpose: Implements valid_capturing_moves_from(), declared in board.h
+//
+// ------------------------- WARNING - DO NOT MODIFY! --------------------------
+//   This file has been generated automatically.  Modifications will be lost!
+//   Generating script: /**{generating_script}**/
+// -----------------------------------------------------------------------------
+//
+#include <array>
+#include <cassert>
+#include <functional>
+#include <vector>
+#include "board.h"
+
+namespace shashki {
+
+/**{all_collectors}**/
+
+using MoveCollector =
+    std::function<void(std::vector<Move> &, std::vector<Move> &,
+                       std::vector<Move> &, const Slice &, const Slice &)>;
+static const std::array<MoveCollector, 32> collectors = {
+    _collect_0,  _collect_1,  _collect_2,  _collect_3,  _collect_4,
+    _collect_5,  _collect_6,  _collect_7,  _collect_8,  _collect_9,
+    _collect_10, _collect_11, _collect_12, _collect_13, _collect_14,
+    _collect_15, _collect_16, _collect_17, _collect_18, _collect_19,
+    _collect_20, _collect_21, _collect_22, _collect_23, _collect_24,
+    _collect_25, _collect_26, _collect_27, _collect_28, _collect_29,
+    _collect_30, _collect_31};
+
+static std::vector<Move> _valid_capturing_moves_from_top_down(
+    const Slice &top, const Slice &bottom, const Loc &ix) {
+  std::vector<Move> l3_moves, l2_moves, l1_moves;
+
+  // bit i set if player has a token at i (using 32 lowest bits only)
+  const Slice top_any = ((top >> 32) | top) & 0xffffffff;
+  const Slice bottom_any = ((bottom >> 32) | bottom) & 0xffffffff;
+
+  // slice with bit i set if the board location has no token
+  const Slice empty = ~(top_any | bottom_any) & 0xffffffff;
+
+  // helper slice made up of bottom_any in upper 32 bits, empty in lower 32:
+  //   (-----------------------------bace----------------------------)
+  //   (----------bottom_any-----------)(-----------empty------------)
+  const Slice bace = (bottom_any << 32) | empty;
+
+  assert(ix >= 0 && ix < 32);
+  collectors[ix](l3_moves, l2_moves, l1_moves, top, bace);
+
+  return !l3_moves.empty() ? l3_moves : l2_moves;
+}
+
+std::vector<Move> valid_capturing_moves_from(const Slice &bk, const Slice &wt,
+                                             const Loc &ix) {
+  std::vector<Move> moves;
+
+  // infer whos turn it is
+  assert(GET_64(bk, ix) || GET_64(bk, ix + 32) || GET_64(wt, ix) ||
+         GET_64(wt, ix + 32));
+  const bool blacks_turn = GET_64(bk, ix) || GET_64(bk, ix + 32);
+
+  if (blacks_turn)
+    moves = _valid_capturing_moves_from_top_down(bk, wt, ix);
+  else {
+    // flip board upside down
+    const Slice &bk_rot = rotate_slice(bk);
+    const Slice &wt_rot = rotate_slice(wt);
+    const Loc &ix_rot = 31 - ix;
+
+    // play usual top-down
+    moves = _valid_capturing_moves_from_top_down(wt_rot, bk_rot, ix_rot);
+
+    // translate moves back: m --> 31 - m, i.e. take their one-complement (or
+    // simply binary "not"); uses above condition that the two times three
+    // superfluous bits of each move may have arbitrary values
+    for (Move &m : moves) m = ~m;
+  }
+
+  return moves;
+}
+
+}  // namespace shashki

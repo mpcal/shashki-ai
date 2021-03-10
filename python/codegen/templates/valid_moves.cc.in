@@ -1,0 +1,69 @@
+//
+// Purpose: Implements valid_moves(), declared in board.h
+//
+// ------------------------- WARNING - DO NOT MODIFY! --------------------------
+//   This file has been generated automatically.  Modifications will be lost!
+// -----------------------------------------------------------------------------
+//
+#include <algorithm>
+#include <unordered_set>
+#include <vector>
+#include "board.h"
+
+namespace shashki {
+
+static std::vector<Move> _valid_moves_top_down(const Slice &top,
+                                               const Slice &bottom) {
+  std::vector<Move> l3_moves, l2_moves, l1_moves;
+
+  // bit i set if player has a token at i (using 32 lowest bits only)
+  const Slice top_any = ((top >> 32) | top) & 0xffffffff;
+  const Slice bottom_any = ((bottom >> 32) | bottom) & 0xffffffff;
+
+  // slice with bit i set if the board location has no token
+  const Slice empty = ~(top_any | bottom_any) & 0xffffffff;
+
+  // helper slice made up of bottom_any in upper 32 bits, empty in lower 32:
+  //   (-----------------------------bace----------------------------)
+  //   (----------bottom_any-----------)(-----------empty------------)
+  const Slice bace = (bottom_any << 32) | empty;
+
+  /**{all_loc_blocks}**/
+
+  // remove l2 moves which share the origin with any l3 move but keep the other
+  // mandatory moves
+  std::unordered_set<Loc> hot_fields;
+  std::transform(l3_moves.begin(), l3_moves.end(),
+                 std::inserter(hot_fields, hot_fields.end()), get_from);
+  std::copy_if(l2_moves.begin(), l2_moves.end(), std::back_inserter(l3_moves),
+               [&hot_fields](const Move &m) {
+                 return hot_fields.find(get_from(m)) == hot_fields.end();
+               });
+
+  return !l3_moves.empty() ? l3_moves : l1_moves;
+}
+
+std::vector<Move> valid_moves(const Slice &bk, const Slice &wt,
+                              bool blacks_turn) {
+  std::vector<Move> moves;
+
+  if (blacks_turn) {
+    moves = _valid_moves_top_down(bk, wt);
+  } else {
+    // flip board upside down
+    const Slice &bk_rot = rotate_slice(bk);
+    const Slice &wt_rot = rotate_slice(wt);
+
+    // play usual top-down
+    moves = _valid_moves_top_down(wt_rot, bk_rot);
+
+    // translate moves back: m --> 31 - m, i.e. take their one-complement (or
+    // simply binary "not"); uses above condition that the two times three
+    // superfluous bits of each move may have arbitrary values
+    for (Move &m : moves) m = ~m;
+  }
+
+  return moves;
+}
+
+}  // namespace shashki
