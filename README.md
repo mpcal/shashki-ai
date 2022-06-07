@@ -1,6 +1,7 @@
 # AI for Playing Russian Checkers (aka "Shashki")
 <div align="center">
 <img src="img/checkers.png" width="75%" title="Photo by Leonard Reese on Unsplash"/>
+<div style="text-align:end;font-size:11px;width:75%">Photo by Leonard Reese on Unsplash</div>
 </div>
 &nbsp;
 
@@ -24,7 +25,7 @@ modular and the core parts are well tested, so please hack away, experiment, imp
 extend anything. And when done, don't forget to send a PR!
 
 The code is based on the classic [Negamax](https://en.wikipedia.org/wiki/Negamax)
-algorithm with alpha-beta pruning, or in other words an efficient version of [Minimiax
+algorithm with alpha-beta pruning, or in other words an efficient version of [Minimax
 search](https://en.wikipedia.org/wiki/Minimax). Negamax and Minimax are equivalent in
 terms of their results however Negamax takes only about the square root of the time a
 Minimax search would. There's a large number of other optimizations such as move
