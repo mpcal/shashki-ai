@@ -3,6 +3,8 @@
 #include <cassert>
 #include <string>
 #include <vector>
+#include <stdexcept>
+#include <optional>
 
 namespace shashki {
 
