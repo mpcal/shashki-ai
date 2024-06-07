@@ -36,12 +36,12 @@ void _parse_query(const Http::Uri::Query& query, Slice& bk, Slice& wt,
     throw runtime_error("Bad query, parameter 'player' is missing");
 
   try {
-    bk = _parse_ul(query.get("bk").get());
-    wt = _parse_ul(query.get("wt").get());
+    bk = _parse_ul(query.get("bk").value());
+    wt = _parse_ul(query.get("wt").value());
 
     if (!board_valid(bk, wt)) throw runtime_error("Board is invalid");
 
-    const string& p = query.get("player").get();
+    const string& p = query.get("player").value();
     if (p == "bk")
       blacks_turn = true;
     else if (p == "wt")
@@ -49,15 +49,15 @@ void _parse_query(const Http::Uri::Query& query, Slice& bk, Slice& wt,
     else
       throw runtime_error("Bad query, player must be 'bk' or 'wt'");
 
-    strategy = query.get("strat").getOrElse("minimax,5");
+    strategy = query.get("strat").value_or("minimax,5");
 
     capfrom = NO_LOC;
-    if (query.has("capfrom")) capfrom = _parse_ul(query.get("capfrom").get());
+    if (query.has("capfrom")) capfrom = _parse_ul(query.get("capfrom").value());
 
     explain = false;
     if (query.has("explain")) {
-      explain = query.get("explain").get() == "true";
-      if (!explain && query.get("explain").get() != "false")
+      explain = query.get("explain").value() == "true";
+      if (!explain && query.get("explain").value() != "false")
         throw runtime_error("Bad query, explain must be 'true' or 'false'");
     }
   } catch (exception& e) {
