@@ -30,11 +30,8 @@ SET_SOURCE_FILES_PROPERTIES(
 add_executable(shashki_ai ${OBJS} ${SOURCES})
 
 # Pistache: link statically
-# include_directories(/home/mike/tmp/shashki-ai/pistache/prefix/include)
-# link_directories(/home/mike/tmp/shashki-ai/pistache/build/src)
-# target_link_libraries(shashki_ai libpistache.a)
-target_include_directories(shashki_ai PRIVATE /home/mike/tmp/shashki-ai/pistache/prefix/include)
-target_link_directories(shashki_ai PRIVATE /home/mike/tmp/shashki-ai/pistache/build/src)
+target_include_directories(shashki_ai PRIVATE pistache/prefix/include)
+target_link_directories(shashki_ai PRIVATE pistache/build/src)
 target_link_libraries(shashki_ai PRIVATE pistache)
 
 # Eigen3 (header-only), only needed when building against CMA-ES (global optimization

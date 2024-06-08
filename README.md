@@ -90,8 +90,10 @@ platforms should be straightforward though.
    except the AI will come up with somewhat inferior moves.
 
 3) Build and install [Pistache](https://github.com/pistacheio/pistache). We need it to
-   run our REST service. When done edit `CMakeLists.txt` and have `Pistache_DIR` point
-   to the install location
+   run our REST service. Just clone the repo into this project's base at `pistache`.
+   Currently we build against Pistache 0.2.9.20240428. In case Pistache's root dir
+   is somwhere else on your system, remember to edit the Pistache section in 
+   `CMakeLists.txt` to set the include and lib locations accordingly.
 
 4) From the root directory, run
    ```
