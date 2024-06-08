@@ -41,7 +41,7 @@ void _parse_query(const Http::Uri::Query& query, Slice& bk, Slice& wt,
 
     if (!board_valid(bk, wt)) throw runtime_error("Board is invalid");
 
-    const string& p = query.get("player").value();
+    const string p = query.get("player").value();
     if (p == "bk")
       blacks_turn = true;
     else if (p == "wt")
