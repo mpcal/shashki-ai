@@ -4,8 +4,8 @@ project(shashki_ai LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_COMPILER /usr/bin/clang++-10)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+set(CMAKE_CXX_COMPILER /usr/bin/clang++-14)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -no-pie")
 
 # set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -DNDEBUG -march=native")
 set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -g -march=native")  # assertions still enabled
@@ -30,10 +30,9 @@ SET_SOURCE_FILES_PROPERTIES(
 add_executable(shashki_ai ${OBJS} ${SOURCES})
 
 # statically link against Pistache
-set(Pistache_DIR ~/opt/libpistache-210114/lib/cmake/pistache)
-find_package(Pistache REQUIRED)
-target_include_directories(shashki_ai PRIVATE ${Pistache_INCLUDE_DIRS})
-target_link_libraries(shashki_ai ${Pistache_LIBRARIES}/libpistache-0.0.002-git20210107.so.0.0)
+# Change this path to the location of the Pistache installation
+target_include_directories(shashki_ai PRIVATE pistache/include) 
+target_link_libraries(shashki_ai pistache/build/src/libpistache.so.0)
 
 # Eigen3 (header-only), only needed when building against CMA-ES (global optimization
 # technique), see `experimental` directory for details
