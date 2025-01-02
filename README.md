@@ -183,6 +183,7 @@ outperformed the Android app, winning 81 games while the Android app won 23.
 <a href="img/wins_over_time.png"><img src="img/wins_over_time.png" width="50%"/></a>
 </div>
 
+// TODO: add Elo scores
 
 ## Implementation Details
 **Conventions.**
